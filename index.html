@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTX 완전 정복: 수도권의 속도 혁명</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&display=swap');
+
+        :root {
+            --primary: #1a237e; /* 짙은 남색 */
+            --accent: #00e676;  /* 밝은 녹색 (속도감) */
+            
+            /* 노선별 색상 */
+            --gtx-a: #9C27B0;   
+            --gtx-a-real: #A05EB5;
+            --gtx-b: #B78D12;   
+            --gtx-c: #005F41;   
+            --gtx-d: #455A64;   /* 차분한 블루그레이 */
+            --gtx-e: #00838F;   /* 짙은 청록색 */
+            --gtx-f: #D84315;   /* 짙은 주황색 */
+
+            --bg-light: #f5f7fa;
+            --text-dark: #2d3436;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* 헤더 섹션 */
+        header {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            font-weight: 900;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* 움직이는 기차 애니메이션 */
+        .train-anim {
+            position: absolute;
+            bottom: 20px;
+            left: -100px;
+            font-size: 3rem;
+            animation: moveTrain 4s linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes moveTrain {
+            0% { left: -100px; transform: scaleX(-1) skewX(-10deg); }
+            100% { left: 110%; transform: scaleX(-1) skewX(-10deg); }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* 공통 섹션 스타일 */
+        section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        section:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            border-bottom: 3px solid var(--accent);
+            display: inline-block;
+            margin-bottom: 25px;
+            padding-bottom: 5px;
+        }
+
+        /* 1. GTX란 무엇인가? */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .highlight-box {
+            background: #e8eaf6;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .speed-visual {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .speed-item strong {
+            display: block;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        /* 2. 노선도 탭 섹션 */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap; /* 버튼이 많아져서 줄바꿈 허용 */
+        }
+
+        .tab-btn {
+            flex: 1 1 30%; /* 모바일에서 3개씩 보이게 */
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #eee;
+            color: #777;
+            min-width: 100px;
+        }
+
+        /* 탭 활성화 색상 */
+        .tab-btn.active-a { background: var(--gtx-a-real); color: white; }
+        .tab-btn.active-b { background: var(--gtx-b); color: white; }
+        .tab-btn.active-c { background: var(--gtx-c); color: white; }
+        .tab-btn.active-d { background: var(--gtx-d); color: white; }
+        .tab-btn.active-e { background: var(--gtx-e); color: white; }
+        .tab-btn.active-f { background: var(--gtx-f); color: white; }
+
+        .route-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .route-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .station-map {
+            background: #2d3436;
+            border-radius: 15px;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+            position: relative;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            overflow-x: auto;
+        }
+
+        .station-dot {
+            width: 15px;
+            height: 15px;
+            background: white;
+            border-radius: 50%;
+            z-index: 2;
+            position: relative;
+            margin: 0 auto;
+        }
+        
+        .station-line {
+            position: absolute;
+            top: 45px; /* dot 위치에 맞춤 */
+            left: 20px;
+            right: 20px;
+            height: 4px;
+            background: rgba(255,255,255,0.3);
+            z-index: 1;
+        }
+
+        .station-wrapper {
+            position: relative;
+            min-width: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .station-label {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        /* 2기 노선 뱃지 */
+        .badge-new {
+            background: #ff5252;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        /* 3. 효과 섹션 */
+        .effects-list {
+            list-style: none;
+        }
+        
+        .effects-list li {
+            background: #e0f2f1;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .icon {
+            font-size: 1.5rem;
+            margin-right: 15px;
+        }
+
+        /* 4. 퀴즈 섹션 */
+        .quiz-container {
+            background: var(--primary);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .quiz-container h2 {
+            color: var(--accent);
+            border-bottom-color: white;
+        }
+
+        .quiz-question {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-btn {
+            padding: 15px;
+            border: 2px solid white;
+            background: transparent;
+            color: white;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover {
+            background: white;
+            color: var(--primary);
+        }
+
+        .result-msg {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            min-height: 30px;
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+            header h1 {
+                font-size: 2rem;
+            }
+            .tab-btn {
+                flex: 1 1 45%; /* 모바일에서 2개씩 줄바꿈 */
+                font-size: 1rem;
+            }
+        }
+
+        /* SVG 아이콘 스타일 */
+        .svg-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 10px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="train-anim">🚄💨</div>
+        <h1>GTX 완전 정복</h1>
+        <p>수도권 출퇴근 30분 시대, 어떻게 가능할까?</p>
+    </header>
+
+    <div class="container">
+        
+        <!-- 섹션 1: 개념 -->
+        <section id="concept">
+            <h2>GTX란 무엇인가요?</h2>
+            <div class="concept-grid">
+                <div>
+                    <p style="font-size: 1.1rem; margin-bottom: 15px;">
+                        <strong>GTX</strong>는 <em>Great Train eXpress</em>의 약자로, 
+                        우리말로는 <strong>'수도권 광역급행철도'</strong>라고 해요.
+                    </p>
+                    <div class="highlight-box">
+                        <h3>🔑 핵심 포인트 3가지</h3>
+                        <ol style="margin-left: 20px; margin-top: 10px;">
+                            <li><strong>대심도:</strong> 지하 40m 깊은 곳(아파트 10층 높이)을 뚫어요.</li>
+                            <li><strong>초고속:</strong> 일반 지하철보다 3배 이상 빨라요.</li>
+                            <li><strong>직선화:</strong> 꼬불꼬불 가지 않고 최대한 직선으로 달려요.</li>
+                        </ol>
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <!-- 간단한 지하 단면도 SVG -->
+                    <svg viewBox="0 0 200 150" class="svg-icon" style="width: 100%; max-width: 300px; height: auto;">
+                        <rect x="0" y="0" width="200" height="30" fill="#81C784" /> <!-- 지상 -->
+                        <text x="100" y="20" text-anchor="middle" font-size="12" fill="white">지상 (도로/건물)</text>
+                        <rect x="0" y="30" width="200" height="40" fill="#90A4AE" /> <!-- 일반 지하철 -->
+                        <text x="100" y="55" text-anchor="middle" font-size="10" fill="white">일반 지하철 (지하 20m)</text>
+                        <rect x="0" y="70" width="200" height="80" fill="#455A64" /> <!-- 대심도 -->
+                        <path d="M10 110 L190 110" stroke="#00e676" stroke-width="4" stroke-dasharray="10,5"/>
+                        <text x="100" y="100" text-anchor="middle" font-size="12" fill="#00e676" font-weight="bold">GTX (지하 40~50m)</text>
+                        <text x="100" y="130" text-anchor="middle" font-size="10" fill="white">건물 방해 없이 쌩쌩!</text>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="speed-visual">
+                <div class="speed-item">
+                    <span>일반 지하철</span>
+                    <strong>30km/h</strong>
+                    <small>(평균 속도)</small>
+                </div>
+                <div class="speed-item">
+                    <span style="font-size: 2rem;">🆚</span>
+                </div>
+                <div class="speed-item">
+                    <span>GTX</span>
+                    <strong style="color: var(--primary);">100km/h</strong>
+                    <small>(최고 180km/h)</small>
+                </div>
+            </div>
+        </section>
+
+        <!-- 섹션 2: 노선 설명 -->
+        <section id="routes">
+            <h2>주요 노선 알아보기</h2>
+            <p style="margin-bottom: 20px;">1기 노선(A,B,C)과 미래에 생길 2기 노선(D,E,F)을 탭을 눌러 확인해보세요!</p>
+            
+            <div class="tabs">
+                <button class="tab-btn active-a" onclick="openRoute('routeA')">GTX-A</button>
+                <button class="tab-btn" onclick="openRoute('routeB')">GTX-B</button>
+                <button class="tab-btn" onclick="openRoute('routeC')">GTX-C</button>
+                <button class="tab-btn" onclick="openRoute('routeD')">GTX-D</button>
+                <button class="tab-btn" onclick="openRoute('routeE')">GTX-E</button>
+                <button class="tab-btn" onclick="openRoute('routeF')">GTX-F</button>
+            </div>
+
+            <!-- A 노선 -->
+            <div id="routeA" class="route-content active">
+                <h3 style="color: var(--gtx-a-real);">GTX-A (파주 운정 ↔ 화성 동탄)</h3>
+                <p>가장 진행 속도가 빠른 노선이에요. 부분 개통되어 이미 달리고 있어요!</p>
+                <br>
+                <div class="station-map" style="background: linear-gradient(to right, #2c3e50, #A05EB5);">
+                    <div class="station-line"></div>
+                    <div class="station-wrapper">
+                        <div class="station-dot"></div>
+                        <span class="station-label">파주 운정</span>
+                    </div>
+                    <div class="station-wrapper">
+                        <div class="station-dot"></div>
+                        <span class="station-label">서울역</span>
+                    </div>
+                    <div class="station-wrapper">
+                        <div class="station-dot"></div>
+                        <span class="station-label">삼성</span>
+                    </div>
+                    <div class="station-wrapper">
+                        <div class="station-dot"></div>
+                        <span class="station-label">동탄</span>
+                    </div>
+                </div>
+                <ul>
+                    <li><strong>특징:</strong> 수도권의 서북부와 동남부를 대각선으로 연결해요.</li>
+                    <li><strong>효과:</strong> 동탄에서 삼성역까지 출퇴근 시간이 19분대로 줄어들어요 (기존 77분).</li>
+                </ul>
+            </div>
+
+            <!-- B 노선 -->
+            <div id="routeB" class="route-content">
+                <h3 style="color: var(--gtx-b);">GTX-B (인천대입구 ↔ 남양주 마석)</h3>
+                <p>수도권의 동서를 가로지르는 노선이에요.</p>
+                <br>
+                <div class="station-map" style="background: linear-gradient(to right, #2c3e50, #B78D12);">
+                    <div class="station-line"></div>
+                    <div class="station-wrapper">
+                        <div class="station-dot"></div>
+                        <span class="station-label">인천대입구</span>
+                    </div>
+                    <div class="station-wrapper">
+                        <div class="station-dot"></div>
+                        <span class="station-label">여의도</span>
+                    </div>
+                    <div class="station-wrapper">
+                        <div class="station-dot"></div>
+                        <span class="station-label">서울역</span>
+                    </div>
+                    <div class="station-wrapper">
+                        <div class="station-dot"></div>
+                        <span class="station-label">마석</span>
+                    </div>
+                </div>
+                <ul>
+                    <li><strong>특징:</strong> 인천 송도에서 서울 중심부를 지나 남양주까지 연결해요.</li>
+                    <li><strong>효과:</strong> 인천 송도에서 서울역까지 27분 만에 주파 가능해요 (기존 80분 이상).</li>
+                </ul>
+            </div>
+
+            <!-- C 노선 -->
+            <div id="routeC" class="route-content">
+                <h3 style="color: var(--gtx-c);">GTX-C (양주 덕정 ↔ 수원)</h3>
+                <p>수도권의 남북을 잇는 척추 같은 노선이에요.</p>
+                <br>
+                <div class="station-map" style="background: linear-gradient(to right, #2c3e50, #005F41);">
+                    <div class="station-line"></div>
+                    <div class="station-wrapper">
+                        <div class="station-dot"></div>
+                        <span class="station-label">양주 덕정</span>
+                    </div>
+                    <div class="station-wrapper">
+                        <div class="station-dot"></div>
+                        <span class="station-label">청량리</span>
+                    </div>
+                    <div class="station-wrapper">
+                        <div class="station-dot"></div>
+                        <span class="station-label">삼성</span>
+                    </div>
+                    <div class="station-wrapper">
+                        <div class="station-dot"></div>
+                        <span class="station-label">수원</span>
+                    </div>
+                </div>
+                <ul>
+                    <li><strong>특징:</strong> 경기 북부와 남부의 주요 도시들을 강남(삼성역)과 연결해요.</li>
+                    <li><strong>효과:</strong> 수원에서 삼성역까지 26분 소요 (기존 78분).</li>
+                </ul>
+            </div>
+
+            <!-- D 노선 -->
+            <div id="routeD" class="route-content">
+                <h3 style="color: var(--gtx-d);">GTX-D (인천/김포 ↔ 팔당/원주) <span class="badge-new">2기 계획</span></h3>
+                <p>흔히 '더블 Y자 노선'이라고 불려요. 왼쪽과 오른쪽 끝이 갈라져 있거든요.</p>
+                <br>
+                <div class="station-map" style="background: linear-gradient(to right, #2c3e50, #455A64);">
+                    <div class="station-line"></div>
+                    <div class="station-wrapper">
+                        <div class="station-dot"></div>
+                        <span class="station-label">인천공항<br>/김포</span>
+                    </div>
+                    <div class="station-wrapper">
+                        <div class="station-dot"></div>
+                        <span class="station-label">부천<br>종합운동장</span>
+                    </div>
+                    <div class="station-wrapper">
+                        <div class="station-dot"></div>
+                        <span class="station-label">삼성</span>
+                    </div>
+                    <div class="station-wrapper">
+                        <div class="station-dot"></div>
+                        <span class="station-label">팔당<br>/원주</span>
+                    </div>
+                </div>
+                <ul>
+                    <li><strong>특징:</strong> 인천국제공항과 김포에서 출발해 서울 강남(삼성)을 지나 하남/여주 방향으로 가요.</li>
+                    <li><strong>효과:</strong> 인천공항에서 강남까지 한 번에 빠르게 갈 수 있게 돼요.</li>
+                </ul>
+            </div>
+
+            <!-- E 노선 -->
+            <div id="routeE" class="route-content">
+                <h3 style="color: var(--gtx-e);">GTX-E (인천공항 ↔ 남양주 덕소) <span class="badge-new">2기 계획</span></h3>
+                <p>수도권 북부 지역을 동서로 길게 연결하는 노선이에요.</p>
+                <br>
+                <div class="station-map" style="background: linear-gradient(to right, #2c3e50, #00838F);">
+                    <div class="station-line"></div>
+                    <div class="station-wrapper">
+                        <div class="station-dot"></div>
+                        <span class="station-label">인천공항</span>
+                    </div>
+                    <div class="station-wrapper">
+                        <div class="station-dot"></div>
+                        <span class="station-label">DMC</span>
+                    </div>
+                    <div class="station-wrapper">
+                        <div class="station-dot"></div>
+                        <span class="station-label">광운대</span>
+                    </div>
+                    <div class="station-wrapper">
+                        <div class="station-dot"></div>
+                        <span class="station-label">덕소</span>
+                    </div>
+                </div>
+                <ul>
+                    <li><strong>특징:</strong> 서울 강북 지역을 통과하며, 인천공항에서 남양주까지 연결해요.</li>
+                    <li><strong>효과:</strong> 상대적으로 교통이 불편했던 서울 북부와 경기 동북부 지역이 빨라져요.</li>
+                </ul>
+            </div>
+
+            <!-- F 노선 -->
+            <div id="routeF" class="route-content">
+                <h3 style="color: var(--gtx-f);">GTX-F (수도권 순환선) <span class="badge-new">2기 계획</span></h3>
+                <p>서울을 중심으로 경기도 주요 도시들을 크게 한 바퀴 도는 링 모양 노선이에요.</p>
+                <br>
+                <div class="station-map" style="background: linear-gradient(to right, #2c3e50, #D84315);">
+                    <div class="station-line"></div>
+                    <div class="station-wrapper">
+                        <div class="station-dot"></div>
+                        <span class="station-label">고양</span>
+                    </div>
+                    <div class="station-wrapper">
+                        <div class="station-dot"></div>
+                        <span class="station-label">수원</span>
+                    </div>
+                    <div class="station-wrapper">
+                        <div class="station-dot"></div>
+                        <span class="station-label">하남</span>
+                    </div>
+                    <div class="station-wrapper">
+                        <div class="station-dot"></div>
+                        <span class="station-label">의정부</span>
+                    </div>
+                    <!-- 순환 표현을 위해 고양을 다시 표시할 수도 있음, 여기선 생략 -->
+                </div>
+                <ul>
+                    <li><strong>특징:</strong> 고양(대곡), 수원, 용인, 성남, 하남, 남양주, 의정부를 둥글게 연결해요.</li>
+                    <li><strong>효과:</strong> 서울을 거치지 않고 경기도 도시끼리 빠르게 이동할 수 있어요.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 섹션 3: 효과 -->
+        <section id="effects">
+            <h2>왜 GTX가 필요할까요?</h2>
+            <ul class="effects-list">
+                <li>
+                    <span class="icon">⏰</span>
+                    <div>
+                        <strong>출퇴근 시간 혁명</strong>
+                        <p>경기도에서 서울까지 1시간 넘게 걸리던 길이 30분 이내로 줄어들어요. 저녁이 있는 삶이 가능해져요!</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="icon">🏘️</span>
+                    <div>
+                        <strong>주거 문제 해결</strong>
+                        <p>서울에 살지 않아도 빠르게 출근할 수 있어서, 서울의 비싼 집값 문제를 덜어줄 수 있어요.</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="icon">🚗</span>
+                    <div>
+                        <strong>교통 체증 감소</strong>
+                        <p>많은 사람들이 자가용 대신 GTX를 타면 도로 위의 차가 줄어들고 환경오염도 줄어요.</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <!-- 섹션 4: 퀴즈 -->
+        <section class="quiz-container">
+            <h2>🚄 GTX 상식 퀴즈!</h2>
+            <div id="quiz-box">
+                <p class="quiz-question" id="question-text">문제 로딩중...</p>
+                <div class="options" id="options-box">
+                    <!-- 버튼들이 여기에 생성됨 -->
+                </div>
+                <div class="result-msg" id="result-msg"></div>
+            </div>
+            <button id="next-btn" style="display:none; margin-top:20px; padding:10px 20px; border-radius:20px; border:none; background:white; color:black; font-weight:bold; cursor:pointer;" onclick="nextQuestion()">다음 문제 ▶</button>
+        </section>
+
+    </div>
+
+    <script>
+        // 노선 탭 기능
+        function openRoute(routeId) {
+            // 모든 콘텐츠 숨기기
+            document.querySelectorAll('.route-content').forEach(el => el.classList.remove('active'));
+            // 모든 탭 버튼 비활성화
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                // 모든 active 클래스 제거 (정규식 대신 단순화하여 나열)
+                el.classList.remove('active-a', 'active-b', 'active-c', 'active-d', 'active-e', 'active-f');
+                el.style.backgroundColor = '#eee';
+                el.style.color = '#777';
+            });
+
+            // 선택된 콘텐츠 보이기
+            document.getElementById(routeId).classList.add('active');
+
+            // 클릭된 버튼 스타일 적용
+            const clickedBtn = event.currentTarget;
+            let activeClass = '';
+            let activeColor = '';
+
+            // 각 노선별 색상 매핑
+            if (routeId === 'routeA') { activeClass = 'active-a'; activeColor = 'var(--gtx-a-real)'; }
+            else if (routeId === 'routeB') { activeClass = 'active-b'; activeColor = 'var(--gtx-b)'; }
+            else if (routeId === 'routeC') { activeClass = 'active-c'; activeColor = 'var(--gtx-c)'; }
+            else if (routeId === 'routeD') { activeClass = 'active-d'; activeColor = 'var(--gtx-d)'; }
+            else if (routeId === 'routeE') { activeClass = 'active-e'; activeColor = 'var(--gtx-e)'; }
+            else if (routeId === 'routeF') { activeClass = 'active-f'; activeColor = 'var(--gtx-f)'; }
+
+            clickedBtn.classList.add(activeClass);
+            clickedBtn.style.backgroundColor = activeColor;
+            clickedBtn.style.color = 'white';
+        }
+
+        // 퀴즈 데이터 및 로직
+        const quizData = [
+            {
+                q: "GTX는 일반 지하철보다 얼마나 깊은 곳에 지어지나요?",
+                a: ["지하 5m", "지하 10m", "지하 40m 이상", "지상 20m"],
+                correct: 2,
+                desc: "정답! 아파트 10층 높이보다 깊은 '대심도(지하 40m 이상)'에 지어져요."
+            },
+            {
+                q: "GTX-A 노선은 어디와 어디를 연결하나요?",
+                a: ["인천 - 마석", "운정 - 동탄", "덕정 - 수원", "김포 - 부천"],
+                correct: 1,
+                desc: "딩동댕! 파주 운정에서 화성 동탄을 잇는 노선이 A노선입니다."
+            },
+            {
+                q: "GTX의 최고 속도는 시속 몇 km일까요?",
+                a: ["30km/h", "80km/h", "100km/h", "180km/h"],
+                correct: 3,
+                desc: "맞아요! 최고 시속 180km로 달려서 일반 지하철보다 3배 이상 빨라요."
+            },
+            {
+                q: "GTX 노선 중 경기도를 둥글게 순환하는 노선은?",
+                a: ["GTX-A", "GTX-C", "GTX-E", "GTX-F"],
+                correct: 3,
+                desc: "맞아요! GTX-F는 수도권 순환선으로 계획되어 있어요."
+            },
+            {
+                q: "GTX가 완성되면 경기도에서 서울까지 목표 이동 시간은?",
+                a: ["10분 이내", "30분대", "1시간 30분", "3시간"],
+                correct: 1,
+                desc: "정답! 수도권 주요 거점을 30분대로 연결하여 출퇴근 시간을 획기적으로 줄이는 것이 목표예요."
+            }
+        ];
+
+        let currentQ = 0;
+        let score = 0;
+
+        function loadQuiz() {
+            if (currentQ >= quizData.length) {
+                // 퀴즈 종료
+                document.getElementById('quiz-box').innerHTML = `
+                    <h3>🎉 퀴즈 종료!</h3>
+                    <p style="font-size:1.5rem; margin:20px 0;">5문제 중 ${score}개를 맞췄어요!</p>
+                    <button onclick="location.reload()" style="padding:10px 20px; border-radius:10px; border:none; background:white; color:#1a237e; cursor:pointer;">처음부터 다시하기</button>
+                `;
+                document.getElementById('next-btn').style.display = 'none';
+                return;
+            }
+
+            const q = quizData[currentQ];
+            document.getElementById('question-text').innerText = `Q${currentQ + 1}. ${q.q}`;
+            document.getElementById('result-msg').innerText = "";
+            document.getElementById('next-btn').style.display = "none";
+            
+            const optionsHtml = q.a.map((opt, idx) => 
+                `<button class="option-btn" onclick="checkAnswer(${idx})">${opt}</button>`
+            ).join('');
+            
+            document.getElementById('options-box').innerHTML = optionsHtml;
+        }
+
+        function checkAnswer(selectedIdx) {
+            const q = quizData[currentQ];
+            const resultMsg = document.getElementById('result-msg');
+            const btns = document.querySelectorAll('.option-btn');
+
+            // 버튼 비활성화
+            btns.forEach(btn => btn.disabled = true);
+
+            if (selectedIdx === q.correct) {
+                resultMsg.innerText = "⭕ " + q.desc;
+                btns[selectedIdx].style.backgroundColor = "#00e676"; // 정답 초록색
+                btns[selectedIdx].style.color = "#000";
+                btns[selectedIdx].style.borderColor = "#00e676";
+                score++;
+            } else {
+                resultMsg.innerText = "❌ 땡! 정답은 " + (q.correct + 1) + "번이에요.";
+                btns[selectedIdx].style.backgroundColor = "#ff5252"; // 오답 빨간색
+                btns[q.correct].style.backgroundColor = "#00e676"; // 실제 정답 표시
+                btns[q.correct].style.color = "#000";
+            }
+
+            document.getElementById('next-btn').style.display = "inline-block";
+        }
+
+        function nextQuestion() {
+            currentQ++;
+            loadQuiz();
+        }
+
+        // 초기 실행
+        window.onload = function() {
+            // A노선 탭 기본 활성화
+            document.querySelector('.tab-btn.active-a').style.backgroundColor = 'var(--gtx-a-real)';
+            document.querySelector('.tab-btn.active-a').style.color = 'white';
+            
+            loadQuiz();
+        };
+    </script>
+</body>
+</html>
